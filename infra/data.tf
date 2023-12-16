@@ -7,8 +7,8 @@ data "aws_availability_zones" "available" {
 }
 
 locals {
-  cluster_name = "gene-ai-eks-${random_string.suffix.result}"
-  s3_bucket_name = "${data.aws_caller_identity.current.account_id}-gene-ai"
-  vpc_name = "gene-ai-vpc"
+  cluster_name        = "gene-ai-eks-${random_string.suffix.result}"
+  s3_bucket_name      = "${data.aws_caller_identity.current.account_id}-gene-ai"
+  vpc_name            = "gene-ai-vpc"
   dynamodb_table_name = "${data.aws_caller_identity.current.account_id}-gene-ai-table"
 }

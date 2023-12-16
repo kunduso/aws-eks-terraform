@@ -19,6 +19,6 @@ resource "aws_kms_key" "gene_ai" {
   enable_key_rotation     = true
 }
 resource "aws_kms_alias" "gene_ai" {
-    name          = "alias/gene_ai"
+  name          = "alias/gene_ai"
   target_key_id = aws_kms_key.gene_ai.key_id
 }
