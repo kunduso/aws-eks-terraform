@@ -17,7 +17,7 @@ env:
 defaults:
   run:
     shell: bash
-    working-directory: ./app/docker
+    
 jobs:
   build:
     name: Deployment
@@ -52,6 +52,7 @@ jobs:
       run: |
         docker build -t $ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG .
         docker push $ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG
+      working-directory: ./app/docker
 
     - name: Update kube config
       run: aws eks update-kubeconfig --name $EKS_CLUSTER_NAME --region $AWS_REGION
@@ -64,4 +65,4 @@ jobs:
         sed -i.bak "s|DOCKER_IMAGE|$ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG|g" manifests/app-deployment.yaml && \
         kubectl apply -f manifests/app-deployment.yaml
         kubectl apply -f manifests/app-service.yaml
-      working-directory: ./app/docker
+      working-directory: ./app
