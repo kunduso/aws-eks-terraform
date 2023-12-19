@@ -22,7 +22,10 @@ jobs:
   build:
     name: Deployment
     runs-on: ubuntu-latest
-
+    permissions:
+      contents: read
+      id-token: write
+      pull-requests: write
     steps:
     - name: Set short git commit SHA
       id: commit
