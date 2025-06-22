@@ -4,12 +4,12 @@ on:
   workflow_dispatch:
   push:
     branches: [ '*' ]
-    paths:
-      - 'infra/**'
+    paths-ignore:
+      - '**/README.md'
   pull_request:
     branches: ["main"]
-    paths:
-      - 'infra/**'
+    paths-ignore:
+      - '**/README.md'
 
 permissions: read-all
 #--------------------------
@@ -21,7 +21,7 @@ jobs:
   terraform:
     name: 'continuous-integration'
     runs-on: ubuntu-latest
-    environment: production
+    environment: development
     permissions:
       contents: read
       id-token: write
@@ -84,7 +84,7 @@ jobs:
                         --format=json \
                         --compare-to=/tmp/infracost-base.json \
                         --out-file=/tmp/infracost.json
-
+  
     # Initialize a new or existing Terraform working directory by creating initial files, loading any remote state, downloading modules, etc.
     - name: Terraform Init
       id: init
@@ -105,8 +105,6 @@ jobs:
       run: |
         terraform plan -no-color -input=false \
         -out=TFplan.JSON
-      continue-on-error: true
-
     # Generate an Infracost diff and save it to a JSON file.
     - name: Generate Infracost diff
       if:  ${{ (github.event_name == 'pull_request') && (vars.INFRACOST_SCAN_TYPE  == 'tf_plan') }}
