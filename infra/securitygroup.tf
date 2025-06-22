@@ -16,23 +16,53 @@ resource "aws_security_group" "eks_nodes" {
   }
 }
 
-# Egress rule for cluster security group
-resource "aws_security_group_rule" "cluster_egress" {
-  description       = "Allow all outbound traffic from cluster"
-  from_port         = 0
-  to_port           = 0
-  protocol          = "-1"
+# Cluster egress rules
+resource "aws_security_group_rule" "cluster_https_egress" {
+  description       = "HTTPS egress for cluster"
+  from_port         = 443
+  to_port           = 443
+  protocol          = "tcp"
   cidr_blocks       = ["0.0.0.0/0"]
   security_group_id = aws_security_group.eks_cluster.id
   type              = "egress"
 }
 
-# Egress rule for nodes security group
-resource "aws_security_group_rule" "nodes_egress" {
-  description       = "Allow all outbound traffic from nodes"
-  from_port         = 0
-  to_port           = 0
-  protocol          = "-1"
+# Node egress rules
+resource "aws_security_group_rule" "nodes_https_egress" {
+  description       = "HTTPS egress for ECR and AWS APIs"
+  from_port         = 443
+  to_port           = 443
+  protocol          = "tcp"
+  cidr_blocks       = ["0.0.0.0/0"]
+  security_group_id = aws_security_group.eks_nodes.id
+  type              = "egress"
+}
+
+resource "aws_security_group_rule" "nodes_http_egress" {
+  description       = "HTTP egress for package updates"
+  from_port         = 80
+  to_port           = 80
+  protocol          = "tcp"
+  cidr_blocks       = ["0.0.0.0/0"]
+  security_group_id = aws_security_group.eks_nodes.id
+  type              = "egress"
+}
+
+resource "aws_security_group_rule" "nodes_dns_egress" {
+  description       = "DNS egress"
+  from_port         = 53
+  to_port           = 53
+  protocol          = "udp"
+  cidr_blocks       = ["0.0.0.0/0"]
+  security_group_id = aws_security_group.eks_nodes.id
+  type              = "egress"
+}
+
+resource "aws_security_group_rule" "nodes_ntp_egress" {
+  description       = "NTP egress"
+  from_port         = 123
+  to_port           = 123
+  protocol          = "udp"
   cidr_blocks       = ["0.0.0.0/0"]
   security_group_id = aws_security_group.eks_nodes.id
   type              = "egress"
