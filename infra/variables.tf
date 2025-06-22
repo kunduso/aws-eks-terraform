@@ -21,7 +21,7 @@ variable "secret_key" {
 variable "name" {
   description = "The name of the application."
   type        = string
-  default     = "app-21"
+  default     = "app-14"
 }
 variable "vpc_cidr" {
   description = "the vpc cidr"
