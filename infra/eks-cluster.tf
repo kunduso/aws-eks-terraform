@@ -20,4 +20,6 @@ resource "aws_eks_cluster" "main" {
   tags = {
     Name = "${var.name}-cluster-update"
   }
+  #checkov:skip=CKV_AWS_58: AWS EKS cluster does not have secrets encryption enabled.
+  #reason-for-skip: This EKS cluster isn't using Secrets.
 }
