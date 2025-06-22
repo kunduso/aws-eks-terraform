@@ -12,8 +12,8 @@ resource "aws_ecr_repository" "image_repo" {
 }
 
 # Add repository policy to allow EKS nodes to pull images
-resource "aws_ecr_repository_policy" "hello_world_policy" {
-  repository = aws_ecr_repository.hello_world.name
+resource "aws_ecr_repository_policy" "repo_policy" {
+  repository = aws_ecr_repository.image_repo.name
 
   policy = jsonencode({
     Version = "2012-10-17",
