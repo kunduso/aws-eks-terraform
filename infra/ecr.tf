@@ -1,6 +1,10 @@
 resource "aws_ecr_repository" "image_repo" {
   name                 = var.name
   image_tag_mutability = "IMMUTABLE"
+  encryption_configuration {
+    encryption_type = "KMS"
+    kms_key         = aws_kms_key.ecr_kms_key.arn
+  }
   image_scanning_configuration {
     scan_on_push = true
   }
@@ -12,8 +16,6 @@ resource "aws_ecr_repository" "image_repo" {
 # Add repository policy to allow EKS nodes to pull images
 resource "aws_ecr_repository_policy" "repo_policy" {
   repository = aws_ecr_repository.image_repo.name
-
-
   policy = jsonencode({
     Version = "2012-10-17",
     Statement = [
