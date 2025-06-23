@@ -1,5 +1,5 @@
 resource "aws_eks_cluster" "main" {
-  name     = "${var.name}-cluster-update"
+  name     = "${var.name}-cluster"
   role_arn = aws_iam_role.eks_cluster.arn
   version  = "1.31"
 
@@ -18,7 +18,7 @@ resource "aws_eks_cluster" "main" {
   ]
 
   tags = {
-    Name = "${var.name}-cluster-update"
+    Name = "${var.name}-cluster"
   }
   #checkov:skip=CKV_AWS_58: AWS EKS cluster does not have secrets encryption enabled.
   #reason-for-skip: This EKS cluster isn't using Secrets.
