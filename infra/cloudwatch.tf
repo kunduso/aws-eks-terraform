@@ -3,7 +3,7 @@ resource "aws_kms_key" "cloudwatch_kms_key" {
   description             = "KMS key for CloudWatch logs encryption"
   deletion_window_in_days = 7
   enable_key_rotation     = true
-  
+
   tags = {
     Name = "${var.name}-encrypt-cloudwatch-logs"
   }
